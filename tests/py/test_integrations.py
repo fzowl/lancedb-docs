@@ -674,7 +674,7 @@ def test_embedding_voyageai_usage() -> None:
     from lancedb.pydantic import LanceModel, Vector
 
     voyageai = (
-        EmbeddingFunctionRegistry.get_instance().get("voyageai").create(name="voyage-3")
+        EmbeddingFunctionRegistry.get_instance().get("voyageai").create(name="voyage-3.5")
     )
 
     class TextModel(LanceModel):
@@ -1092,7 +1092,7 @@ def test_reranking_voyageai_usage() -> None:
     ]
     tbl = db.create_table("test", schema=Schema, mode="overwrite")
     tbl.add(data)
-    reranker = VoyageAIReranker(model_name="rerank-2")
+    reranker = VoyageAIReranker(model_name="rerank-2.5")
 
     # Run vector search with a reranker
     result = tbl.search("hello").rerank(reranker=reranker).to_list()

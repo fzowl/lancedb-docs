@@ -1,9 +1,9 @@
 ---
 title: VoyageAI by MongoDB
-sidebarTitle: VoyageAI by MongoDB
+sidebarTitle: VoyageAI
 ---
 
-import { PyEmbeddingVoyageaiUsage, PyEmbeddingVoyageaiMultimodal } from '/snippets/integrations.mdx';
+import { PyEmbeddingVoyageaiUsage, PyEmbeddingVoyageaiMultimodal, PyEmbeddingVoyageaiContextualized } from '/snippets/integrations.mdx';
 
 VoyageAI by MongoDB provides cutting-edge embedding and rerankers.
 
@@ -35,7 +35,7 @@ Supported models are (see the [VoyageAI by MongoDB model catalog](https://docs.v
 
 - voyage-multimodal-3.5 (supports text, images, and video)
 
-**Older models (still accessible):** voyage-3-large, voyage-3.5, voyage-3.5-lite, voyage-code-3, voyage-multilingual-2.
+**Older models (still accessible):** voyage-3-large, voyage-3.5, voyage-3.5-lite, voyage-code-3, voyage-multilingual-2, voyage-multimodal-3.
 
 <Info>
 **Multimodal Model:** `voyage-multimodal-3.5` supports text, images, and video inputs. It outputs 1024-dimensional embeddings by default, configurable via the `output_dimension` parameter (256, 512, 1024, 2048). See the [VoyageAI by MongoDB multimodal embeddings documentation](https://docs.voyageai.com/docs/multimodal-embeddings) for more details.
@@ -74,38 +74,9 @@ its signature is `contextualized_embed(inputs, model, ...)` where
   `enable_auto_chunking=True` together with `input_type="document"`).
 
 <CodeGroup>
-```python Python icon="python"
-import voyageai
-
-vo = voyageai.Client()  # reads VOYAGE_API_KEY from the environment
-
-# Format 1: List[List[str]] — you provide the chunks per document
-grouped = [
-    ["The cat sat on the mat.", "It purred contentedly."],
-    ["Rain fell all morning.", "The streets were empty."],
-]
-grouped_result = vo.contextualized_embed(
-    inputs=grouped,
-    model="voyage-context-4",
-    input_type="document",
-)
-
-# Format 2: List[str] — pass whole documents and let the service chunk them
-documents = [
-    "The cat sat on the mat. It purred contentedly.",
-    "Rain fell all morning. The streets were empty.",
-]
-chunked_result = vo.contextualized_embed(
-    inputs=documents,
-    model="voyage-context-4",
-    input_type="document",
-    enable_auto_chunking=True,
-)
-
-for doc in grouped_result.results:
-    for embedding in doc.embeddings:
-        print(len(embedding))
-```
+  <CodeBlock filename="Python" language="Python" icon="python">
+    {PyEmbeddingVoyageaiContextualized}
+  </CodeBlock>
 </CodeGroup>
 
 ### Multimodal Example

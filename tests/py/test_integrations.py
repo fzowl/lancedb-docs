@@ -728,6 +728,45 @@ def test_embedding_voyageai_multimodal() -> None:
     # --8<-- [end:embedding_voyageai_multimodal]
 
 
+def test_embedding_voyageai_contextualized() -> None:
+    require_env("VOYAGE_API_KEY")
+
+    # --8<-- [start:embedding_voyageai_contextualized]
+    import voyageai
+
+    vo = voyageai.Client()  # reads VOYAGE_API_KEY from the environment
+
+    # Format 1: List[List[str]] — you supply the chunks for each document
+    grouped = [
+        ["The cat sat on the mat.", "It purred contentedly."],
+        ["Rain fell all morning.", "The streets were empty."],
+    ]
+    grouped_result = vo.contextualized_embed(
+        inputs=grouped,
+        model="voyage-context-4",
+        input_type="document",
+    )
+    for doc in grouped_result.results:
+        for embedding in doc.embeddings:
+            print(len(embedding))
+
+    # Format 2: List[str] — pass whole documents and let the service chunk them
+    documents = [
+        "The cat sat on the mat. It purred contentedly.",
+        "Rain fell all morning. The streets were empty.",
+    ]
+    chunked_result = vo.contextualized_embed(
+        inputs=documents,
+        model="voyage-context-4",
+        input_type="document",
+        enable_auto_chunking=True,
+    )
+    for doc in chunked_result.results:
+        for embedding in doc.embeddings:
+            print(len(embedding))
+    # --8<-- [end:embedding_voyageai_contextualized]
+
+
 # Reranking integrations
 
 

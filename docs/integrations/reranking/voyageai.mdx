@@ -1,6 +1,6 @@
 ---
 title: VoyageAI by MongoDB Reranker
-sidebarTitle: "VoyageAI by MongoDB"
+sidebarTitle: "VoyageAI"
 description: Integrate VoyageAI by MongoDB's cutting-edge reranking models with LanceDB. Features model selection, API key management, and comprehensive scoring options for all search types.
 
 ---
@@ -27,7 +27,7 @@ Accepted Arguments
 ----------------
 | Argument | Type | Default | Description |
 | --- | --- | --- | --- |
-| `model_name` | `str` | `None` | The name of the reranker model to use. Available models are: rerank-2.5, rerank-2.5-lite, rerank-2, rerank-2-lite. See the [reranker model catalog](https://docs.voyageai.com/docs/reranker) for the full, current list. |
+| `model_name` | `str` | `None` | The name of the reranker model to use. Available models are: rerank-2.5, rerank-2.5-lite (recommended), rerank-3, rerank-3-lite (in preview), rerank-2, rerank-2-lite. See the [reranker model catalog](https://docs.voyageai.com/docs/reranker) for the full, current list. |
 | `column` | `str` | `"text"` | The name of the column to use as input to the cross encoder model. |
 | `top_n` | `str` | `None` | The number of results to return. If None, will return all results. |
 | `api_key` | `str` | `None` | The API key for the VoyageAI by MongoDB API. If not provided, the `VOYAGE_API_KEY` environment variable is used. |

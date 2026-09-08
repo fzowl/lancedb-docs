@@ -1,44 +1,54 @@
 ---
-title: VoyageAI
+title: VoyageAI by MongoDB
 sidebarTitle: VoyageAI
 ---
 
-import { PyEmbeddingVoyageaiUsage, PyEmbeddingVoyageaiMultimodal } from '/snippets/integrations.mdx';
+import { PyEmbeddingVoyageaiUsage, PyEmbeddingVoyageaiMultimodal, PyEmbeddingVoyageaiContextualized } from '/snippets/integrations.mdx';
 
-Voyage AI provides cutting-edge embedding and rerankers.
+VoyageAI by MongoDB provides cutting-edge embedding and rerankers.
 
 
-Using voyageai API requires voyageai package, which can be installed using `pip install voyageai`. Voyage AI embeddings are used to generate embeddings for text data. The embeddings can be used for various tasks like semantic search, clustering, and classification.
-You also need to set the `VOYAGE_API_KEY` environment variable to use the VoyageAI API.
+Using the VoyageAI by MongoDB API requires the `voyageai` package, which can be installed using `pip install voyageai`. VoyageAI by MongoDB embeddings are used to generate embeddings for text data. The embeddings can be used for various tasks like semantic search, clustering, and classification.
+You also need to set the `VOYAGE_API_KEY` environment variable to use the VoyageAI by MongoDB API.
 
-Supported models are:
+Supported models are (see the [VoyageAI by MongoDB model catalog](https://docs.voyageai.com/docs/embeddings) for the full, current list):
 
-- voyage-4-large (best retrieval quality, 1024 default dimensions, supports 256/512/1024/2048)
-- voyage-4 (balanced general-purpose, 1024 default dimensions, supports 256/512/1024/2048)
-- voyage-4-lite (optimized for latency/cost, 1024 default dimensions, supports 256/512/1024/2048)
-- voyage-context-3
-- voyage-3.5
-- voyage-3.5-lite
-- voyage-3
-- voyage-3-lite
-- voyage-finance-2
-- voyage-multilingual-2
-- voyage-law-2
-- voyage-code-2
-- voyage-multimodal-3.5 (multimodal - supports text, images, and video)
+**Current generation (4 series)** — 32K context, 1024 default dimensions, configurable to 256/512/2048:
+
+- voyage-4-large (best general-purpose and multilingual retrieval quality)
+- voyage-4 (balanced general-purpose and multilingual retrieval)
+- voyage-4-lite (optimized for latency and cost)
+- voyage-code-4 (optimized for code retrieval and coding agents)
+- voyage-4-nano (open-weight, also available on Hugging Face)
+
+**Contextualized chunk embeddings:**
+
+- voyage-context-4 (current, recommended)
+- voyage-context-3 (previous generation)
+
+**Domain-specific:**
+
+- voyage-finance-2 (finance retrieval and RAG, 1024 dimensions)
+- voyage-law-2 (legal retrieval and RAG, 1024 dimensions)
+
+**Multimodal:**
+
+- voyage-multimodal-3.5 (supports text, images, and video)
+
+**Older models (still accessible):** voyage-3-large, voyage-3.5, voyage-3.5-lite, voyage-code-3, voyage-multilingual-2, voyage-multimodal-3.
 
 <Info>
-**Multimodal Model:** `voyage-multimodal-3.5` supports text, images, and video inputs. It outputs 1024-dimensional embeddings by default, configurable via the `output_dimension` parameter (256, 512, 1024, 2048). See the [VoyageAI multimodal embeddings documentation](https://docs.voyageai.com/docs/multimodal-embeddings) for more details.
+**Multimodal Model:** `voyage-multimodal-3.5` supports text, images, and video inputs. It outputs 1024-dimensional embeddings by default, configurable via the `output_dimension` parameter (256, 512, 1024, 2048). See the [VoyageAI by MongoDB multimodal embeddings documentation](https://docs.voyageai.com/docs/multimodal-embeddings) for more details.
 </Info>
 
 Supported parameters (to be passed in `create` method) are:
 
 | Parameter | Type | Default Value | Description |
 |---|---|--------|---------|
-| `name` | `str` | `None` | The model ID of the model to use. Supported models: voyage-4-large, voyage-4, voyage-4-lite, voyage-3, voyage-3-lite, voyage-3.5, voyage-3.5-lite, voyage-context-3, voyage-finance-2, voyage-multilingual-2, voyage-law-2, voyage-code-2, voyage-multimodal-3.5 |
+| `name` | `str` | `None` | The model ID of the model to use. Supported models: voyage-4-large, voyage-4, voyage-4-lite, voyage-4-nano, voyage-code-4, voyage-context-4, voyage-context-3, voyage-3-large, voyage-3.5, voyage-3.5-lite, voyage-code-3, voyage-finance-2, voyage-multilingual-2, voyage-law-2, voyage-multimodal-3.5 |
 | `input_type` | `str` | `None` | Type of the input text. Default to None. Other options: query, document. |
 | `truncation` | `bool` | `True` | Whether to truncate the input texts to fit within the context length. |
-| `output_dimension` | `int` | `None` | Output embedding dimension. Only supported by `voyage-multimodal-3.5`. Valid options: 256, 512, 1024 (default), 2048. |
+| `output_dimension` | `int` | `None` | Output embedding dimension. Supported by the 4-series, `voyage-context-4`, and `voyage-multimodal-3.5` models. Valid options: 256, 512, 1024 (default), 2048. |
 
 
 Usage Example:
@@ -46,6 +56,26 @@ Usage Example:
 <CodeGroup>
   <CodeBlock filename="Python" language="Python" icon="python">
     {PyEmbeddingVoyageaiUsage}
+  </CodeBlock>
+</CodeGroup>
+
+### Contextualized Chunk Embeddings
+
+The `voyage-context-4` and `voyage-context-3` models produce contextualized chunk
+embeddings: each chunk is embedded with awareness of the surrounding document, which
+improves retrieval over chunks embedded independently. Call them through the VoyageAI
+by MongoDB `contextualized_embed` API. Per the
+[official specification](https://docs.voyageai.com/docs/contextualized-chunk-embeddings),
+its signature is `contextualized_embed(inputs, model, ...)` where
+`inputs: Union[List[List[str]], List[str]]` — **both** input formats are supported:
+
+- `List[List[str]]` — you supply the chunks for each document yourself.
+- `List[str]` — you pass whole documents and let the service chunk them (requires
+  `enable_auto_chunking=True` together with `input_type="document"`).
+
+<CodeGroup>
+  <CodeBlock filename="Python" language="Python" icon="python">
+    {PyEmbeddingVoyageaiContextualized}
   </CodeBlock>
 </CodeGroup>
 

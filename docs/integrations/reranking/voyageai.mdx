@@ -1,17 +1,17 @@
 ---
-title: VoyageAI Reranker
-sidebarTitle: "Voyage AI"
-description: Integrate VoyageAI's cutting-edge reranking models with LanceDB. Features model selection, API key management, and comprehensive scoring options for all search types.
+title: VoyageAI by MongoDB Reranker
+sidebarTitle: "VoyageAI"
+description: Integrate VoyageAI by MongoDB's cutting-edge reranking models with LanceDB. Features model selection, API key management, and comprehensive scoring options for all search types.
 
 ---
 
 import { PyRerankingVoyageaiUsage } from '/snippets/integrations.mdx';
 
-# VoyageAI Reranker
+# VoyageAI by MongoDB Reranker
 
-Voyage AI provides cutting-edge embedding and rerankers.
+VoyageAI by MongoDB provides cutting-edge embedding and rerankers.
 
-This reranker uses the [VoyageAI](https://docs.voyageai.com/docs/) API to rerank the search results. You can use this reranker by passing `VoyageAIReranker()` to the `rerank()` method. Note that you'll either need to set the `VOYAGE_API_KEY` environment variable or pass the `api_key` argument to use this reranker.
+This reranker uses the [VoyageAI by MongoDB](https://docs.voyageai.com/docs/) API to rerank the search results. You can use this reranker by passing `VoyageAIReranker()` to the `rerank()` method. Note that you'll either need to set the `VOYAGE_API_KEY` environment variable or pass the `api_key` argument to use this reranker.
 
 
 > **Note:** Supported query types – Hybrid, Vector, and FTS.
@@ -27,10 +27,10 @@ Accepted Arguments
 ----------------
 | Argument | Type | Default | Description |
 | --- | --- | --- | --- |
-| `model_name` | `str` | `None` | The name of the reranker model to use. Available models are: rerank-2, rerank-2-lite |
+| `model_name` | `str` | `None` | The name of the reranker model to use. Available models are: rerank-2.5, rerank-2.5-lite (recommended), rerank-3, rerank-3-lite (in preview), rerank-2, rerank-2-lite. See the [reranker model catalog](https://docs.voyageai.com/docs/reranker) for the full, current list. |
 | `column` | `str` | `"text"` | The name of the column to use as input to the cross encoder model. |
 | `top_n` | `str` | `None` | The number of results to return. If None, will return all results. |
-| `api_key` | `str` | `None` | The API key for the Voyage AI API. If not provided, the `VOYAGE_API_KEY` environment variable is used. |
+| `api_key` | `str` | `None` | The API key for the VoyageAI by MongoDB API. If not provided, the `VOYAGE_API_KEY` environment variable is used. |
 | `return_score` | `str` | `"relevance"` | Options are "relevance" or "all". The type of score to return. If "relevance", will return only the `_relevance_score. If "all" is supported, will return relevance score along with the vector and/or fts scores depending on query type |
 | `truncation` | `bool` | `None` | Whether to truncate the input to satisfy the "context length limit" on the query and the documents. |
 
